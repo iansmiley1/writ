@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Writer's Scratchpad</title>
+    <style>
+        :root {
+            /* Default Theme (Light) */
+            --bg-color: #fcfbfa;
+            --text-color: #2c2a29;
+            --card-bg: #ffffff;
+            --border-color: #e6e4e2;
+            --accent-color: #8c7b6e;
+            --accent-hover: #6f5f54;
+            --subtext-color: #8c8c8c;
+            --muted-text: #666666;
+            --status-color: #a0a0a0;
+        }
+
+        /* Dark Mode */
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --card-bg: #1e1e1e;
+            --border-color: #333333;
+            --accent-color: #4a4a4a;
+            --accent-hover: #626262;
+            --subtext-color: #888888;
+            --muted-text: #aaaaaa;
+            --status-color: #777777;
+        }
+
+        /* Pink & Purple Mode */
+        [data-theme="pink-purple"] {
+            --bg-color: #2b102f;
+            --text-color: #fce4ec;
+            --card-bg: #3a1540;
+            --border-color: #5c2266;
+            --accent-color: #d81b60;
+            --accent-hover: #ad1457;
+            --subtext-color: #ce93d8;
+            --muted-text: #f48fb1;
+            --status-color: #ba68c8;
+        }
+
+        /* Green & Black Mode (Matrix/Terminal style) */
+        [data-theme="green-black"] {
+            --bg-color: #050b05;
+            --text-color: #00ff66;
+            --card-bg: #0d1a0d;
+            --border-color: #1a331a;
+            --accent-color: #008033;
+            --accent-hover: #00b347;
+            --subtext-color: #009933;
+            --muted-text: #00cc44;
+            --status-color: #006622;
+        }
+
+        /* Tan & Orange Mode */
+        [data-theme="tan-orange"] {
+            --bg-color: #f5ebe0;
+            --text-color: #432818;
+            --card-bg: #e3d5ca;
+            --border-color: #d5bdaf;
+            --accent-color: #d97706;
+            --accent-hover: #b45309;
+            --subtext-color: #9a8c98;
+            --muted-text: #6b705c;
+            --status-color: #b5838d;
+        }
+
+        body {
+            font-family: "Georgia", serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        h1 {
+            font-size: 24px;
+            font-weight: normal;
+            margin-top: 0;
+            margin-bottom: 5px;
+            color: var(--text-color);
+        }
+        .subtitle {
+            font-size: 13px;
+            color: var(--subtext-color);
+            margin-bottom: 25px;
+            font-family: sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Two-Pane Layout */
+        .editor-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .pane-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pane-label {
+            font-family: sans-serif;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--subtext-color);
+            margin-bottom: 6px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 450px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            outline: none;
+            resize: vertical;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 18px;
+            line-height: 1.8;
+            color: var(--text-color);
+            background: transparent;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .footer {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: sans-serif;
+            font-size: 14px;
+            color: var(--muted-text);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .status {
+            font-style: italic;
+            color: var(--status-color);
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        select {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 7px 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            outline: none;
+        }
+        button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background-color: var(--accent-hover);
+        }
+
+        @media (max-width: 768px) {
+            .editor-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Writer's Notes</h1>
+    <div class="subtitle">Dual Pane • Auto-Saves Locally • Top-Line Insertion</div>
+    
+    <div class="editor-grid">
+        <div class="pane-container">
+            <div class="pane-label">Pane 1</div>
+            <textarea id="pane1" placeholder="Start typing in Pane 1..."></textarea>
+        </div>
+        
+        <div class="pane-container">
+            <div class="pane-label">Pane 2</div>
+            <textarea id="pane2" placeholder="Start typing in Pane 2..."></textarea>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <div id="wordCount">0 words total</div>
+        <div id="saveStatus" class="status">Saved</div>
+        <div class="controls">
+            <select id="themeSelect" onchange="changeTheme(this.value)">
+                <option value="light">Default Light</option>
+                <option value="dark">Dark</option>
+                <option value="pink-purple">Pink & Purple</option>
+                <option value="green-black">Green & Black</option>
+                <option value="tan-orange">Tan & Orange</option>
+            </select>
+            <button onclick="downloadNotes()">Download All (.txt)</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const pane1 = document.getElementById('pane1');
+    const pane2 = document.getElementById('pane2');
+    const wordCount = document.getElementById('wordCount');
+    const saveStatus = document.getElementById('saveStatus');
+    const themeSelect = document.getElementById('themeSelect');
+
+    // Attach Top-Line Enter Behavior
+    setupTopLineEnter(pane1, 'writers_scratchpad_pane1');
+    setupTopLineEnter(pane2, 'writers_scratchpad_pane2');
+
+    function setupTopLineEnter(textarea, storageKey) {
+        textarea.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                
+                // Prepend a new line at the very top of the text
+                textarea.value = '\n' + textarea.value;
+                
+                // Keep the cursor positioned at the very top (position 0)
+                textarea.setSelectionRange(0, 0);
+                
+                // Ensure scroll focuses back to top
+                textarea.scrollTop = 0;
+                
+                // Trigger save and update count
+                handleTyping(storageKey, textarea.value);
+            }
+        });
+    }
+
+    // Load saved content & theme on startup
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedPane1 = localStorage.getItem('writers_scratchpad_pane1') || localStorage.getItem('writers_scratchpad_notes');
+        if (savedPane1) {
+            pane1.value = savedPane1;
+        }
+
+        const savedPane2 = localStorage.getItem('writers_scratchpad_pane2');
+        if (savedPane2) {
+            pane2.value = savedPane2;
+        }
+
+        updateWordCount();
+
+        const savedTheme = localStorage.getItem('writers_scratchpad_theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        themeSelect.value = savedTheme;
+    });
+
+    // Handle Theme switching
+    function changeTheme(themeName) {
+        document.documentElement.setAttribute('data-theme', themeName);
+        localStorage.setItem('writers_scratchpad_theme', themeName);
+    }
+
+    // Handle Input for Pane 1
+    pane1.addEventListener('input', () => {
+        handleTyping('writers_scratchpad_pane1', pane1.value);
+    });
+
+    // Handle Input for Pane 2
+    pane2.addEventListener('input', () => {
+        handleTyping('writers_scratchpad_pane2', pane2.value);
+    });
+
+    function handleTyping(key, value) {
+        saveStatus.textContent = "Typing...";
+        localStorage.setItem(key, value);
+        updateWordCount();
+        
+        clearTimeout(window.saveTimer);
+        window.saveTimer = setTimeout(() => {
+            saveStatus.textContent = "Saved";
+        }, 1000);
+    }
+
+    function updateWordCount() {
+        const text = pane1.value + " " + pane2.value;
+        const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+        wordCount.textContent = `${words.length} words total`;
+    }
+
+    // Export both notes as a single file
+    function downloadNotes() {
+        const fullContent = `=== PANE 1 ===\n\n${pane1.value}\n\n========================\n\n=== PANE 2 ===\n\n${pane2.value}`;
+        const blob = new Blob([fullContent], { type: 'text/plain' });
+        const anchor = document.createElement('a');
+        anchor.download = 'my-writing-notes.txt';
+        anchor.href = window.URL.createObjectURL(blob);
+        anchor.click();
+        window.URL.revokeObjectURL(anchor.href);
+    }
+</script>
+
+</body>
+</html>
